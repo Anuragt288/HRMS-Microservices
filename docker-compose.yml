@@ -1,0 +1,58 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: hrms-mysql-compose
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - hrms_mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  service-registry:
+    build: ./service-registry
+    container_name: hrms-service-registry-compose
+    restart: unless-stopped
+    ports:
+      - "8762:8761"
+
+  auth-service:
+    build: ./auth-service/auth-service
+    container_name: hrms-auth-service-compose
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - service-registry
+
+  employee-service:
+    build: ./employee-service
+    container_name: hrms-employee-service-compose
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - service-registry
+
+  gateway-service:
+    build: ./gateway-service
+    container_name: hrms-gateway-service-compose
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-registry
+      - auth-service
+      - employee-service
+
+volumes:
+  hrms_mysql_data:
