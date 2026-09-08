@@ -2,8 +2,7 @@
 
 ## Overview
 
-This project is a Human Resource Management System built using
-Spring Boot and Microservices Architecture.
+This project is a Human Resource Management System built using Spring Boot and Microservices Architecture.
 
 ## Microservices
 
