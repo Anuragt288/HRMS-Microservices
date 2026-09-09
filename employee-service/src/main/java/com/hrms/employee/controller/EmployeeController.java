@@ -1,7 +1,11 @@
 package com.hrms.employee.controller;
 
+import com.hrms.employee.dto.EmployeeRequest;
 import com.hrms.employee.entity.Employee;
 import com.hrms.employee.service.EmployeeService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +26,10 @@ public class EmployeeController {
     // Create employee
     @PostMapping
     public ResponseEntity<Employee> createEmployee(
-            @RequestBody Employee employee) {
+            @Valid @RequestBody EmployeeRequest employeeRequest) {
 
         Employee createdEmployee =
-                employeeService.createEmployee(employee);
+                employeeService.createEmployee(employeeRequest);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -55,10 +59,10 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(
             @PathVariable UUID id,
-            @RequestBody Employee employee) {
+            @Valid @RequestBody EmployeeRequest employeeRequest) {
 
         return ResponseEntity.ok(
-                employeeService.updateEmployee(id, employee)
+                employeeService.updateEmployee(id, employeeRequest)
         );
     }
 
