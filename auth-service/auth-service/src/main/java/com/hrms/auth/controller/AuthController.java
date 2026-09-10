@@ -5,14 +5,14 @@ import com.hrms.auth.dto.LoginResponse;
 import com.hrms.auth.service.AuthService;
 
 import jakarta.validation.Valid;
-import java.util.Map;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.hrms.auth.dto.RefreshTokenRequest;
 import com.hrms.auth.dto.RefreshTokenResponse;
-
+import com.hrms.auth.dto.ApiResponse;
 
 import org.springframework.security.core.Authentication;
 
@@ -27,18 +27,24 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
+    public ResponseEntity<ApiResponse<LoginResponse>> login(
             @Valid @RequestBody LoginRequest request
     ) {
         System.out.println("LOGIN CONTROLLER HIT");
 
         LoginResponse response = authService.login(request);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Login successful",
+                        response
+                )
+        );
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(
+    public ResponseEntity<ApiResponse<RefreshTokenResponse>> refreshToken(
             @RequestBody RefreshTokenRequest request
     ) {
 
@@ -47,16 +53,25 @@ public class AuthController {
                         request.getRefreshToken()
                 );
 
-        return ResponseEntity.ok(response);
-    }
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Access token refreshed successfully",
+                        response
+                )
+        );    }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(Authentication authentication) {
+    public ResponseEntity<ApiResponse<String>> logout(Authentication authentication) {
 
         authService.logout(authentication.getName());
 
         return ResponseEntity.ok(
-                Map.of("message", "Logout successful")
+                new ApiResponse<>(
+                        200,
+                        "Logout successful",
+                        null
+                )
         );
     }
 }

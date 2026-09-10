@@ -2,6 +2,7 @@ package com.hrms.auth.service;
 
 import com.hrms.auth.entity.RefreshToken;
 import com.hrms.auth.entity.User;
+import com.hrms.auth.exception.RefreshTokenException;
 import com.hrms.auth.repository.RefreshTokenRepository;
 import com.hrms.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +57,7 @@ public class RefreshTokenService {
 
             refreshTokenRepository.delete(refreshToken);
 
-            throw new RuntimeException("Refresh token expired");
+            throw new RefreshTokenException("Refresh token expired");
         }
 
         return refreshToken;
@@ -66,7 +67,7 @@ public class RefreshTokenService {
 
         return refreshTokenRepository
                 .findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+                .orElseThrow(() -> new RefreshTokenException("Refresh token not found"));
     }
 
     public void deleteByUserId(String userId) {

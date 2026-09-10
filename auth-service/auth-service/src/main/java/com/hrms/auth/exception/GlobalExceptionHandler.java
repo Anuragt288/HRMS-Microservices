@@ -6,23 +6,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-
+import com.hrms.auth.dto.ApiResponse;
+import com.hrms.auth.exception.RefreshTokenException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<ApiResponse<String>> handleRefreshTokenException(
+            RefreshTokenException ex) {
 
-        Map<String, Object> response = Map.of(
-                "timestamp", LocalDateTime.now(),
-                "status", HttpStatus.BAD_REQUEST.value(),
-                "error", "Bad Request",
-                "message", ex.getMessage()
+        ApiResponse<String> response = new ApiResponse<>(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
         );
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(response);
     }
+
+
 }
