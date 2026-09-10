@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import java.util.UUID;
 
 @RestController
@@ -38,10 +40,12 @@ public class EmployeeController {
 
     // Get all employees
     @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<Page<Employee>> getAllEmployees(
+            @PageableDefault(size = 10, sort = "firstName")
+            Pageable pageable) {
 
         return ResponseEntity.ok(
-                employeeService.getAllEmployees()
+                employeeService.getAllEmployees(pageable)
         );
     }
 
