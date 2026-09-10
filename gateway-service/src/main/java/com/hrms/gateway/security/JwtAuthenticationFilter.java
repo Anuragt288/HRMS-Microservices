@@ -1,5 +1,6 @@
 package com.hrms.gateway.security;
 
+import com.hrms.gateway.util.GatewayResponseUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,10 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
+import com.hrms.gateway.dto.ApiResponse;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.core.io.buffer.DataBuffer;
 
 @Component
 public class JwtAuthenticationFilter implements WebFilter {
@@ -43,25 +48,33 @@ public class JwtAuthenticationFilter implements WebFilter {
 
         // Token missing hai
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            exchange.getResponse()
-                    .setStatusCode(HttpStatus.UNAUTHORIZED);
-
-            return exchange.getResponse().setComplete();
+            return GatewayResponseUtil.writeErrorResponse(
+                    exchange,
+                    HttpStatus.UNAUTHORIZED.value(),
+                    "Authentication token is required"
+            );
         }
 
         String token = authHeader.substring(7);
 
         // Token invalid ya expired hai
         if (!jwtService.isTokenValid(token)) {
-            exchange.getResponse()
-                    .setStatusCode(HttpStatus.UNAUTHORIZED);
-
-            return exchange.getResponse().setComplete();
+            return GatewayResponseUtil.writeErrorResponse(
+                    exchange,
+                    HttpStatus.UNAUTHORIZED.value(),
+                    "Invalid or expired token"
+            );
         }
 
         // JWT se role extract karo
         String role = jwtService.extractRole(token);
 
+        if (role == null || role.isBlank()) {
+            exchange.getResponse()
+                    .setStatusCode(HttpStatus.FORBIDDEN);
+
+            return exchange.getResponse().setComplete();
+        }
         String method = exchange.getRequest()
                 .getMethod()
                 .name();
@@ -75,10 +88,11 @@ public class JwtAuthenticationFilter implements WebFilter {
             // GET ADMIN aur EMPLOYEE dono kar sakte hain
             // POST, PUT, DELETE sirf ADMIN kar sakta hai
             if (!isReadRequest && !isAdmin) {
-                exchange.getResponse()
-                        .setStatusCode(HttpStatus.FORBIDDEN);
-
-                return exchange.getResponse().setComplete();
+                return GatewayResponseUtil.writeErrorResponse(
+                        exchange,
+                        HttpStatus.FORBIDDEN.value(),
+                        "Access denied"
+                );
             }
         }
 

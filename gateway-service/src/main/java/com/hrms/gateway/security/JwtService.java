@@ -2,7 +2,6 @@ package com.hrms.gateway.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,9 @@ public class JwtService {
     private String secretKey;
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(
-                java.util.Base64.getEncoder()
-                        .encodeToString(secretKey.getBytes())
+        return Keys.hmacShaKeyFor(
+                secretKey.getBytes(java.nio.charset.StandardCharsets.UTF_8)
         );
-
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String extractUsername(String token) {
