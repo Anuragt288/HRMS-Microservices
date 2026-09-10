@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -46,6 +48,16 @@ public class EmployeeController {
 
         return ResponseEntity.ok(
                 employeeService.getAllEmployees(pageable)
+        );
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<Employee>> searchEmployees(
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String search) {
+
+        return ResponseEntity.ok(
+                employeeService.searchEmployees(department, status, search)
         );
     }
 

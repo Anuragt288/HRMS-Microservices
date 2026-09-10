@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,6 +39,28 @@ public class EmployeeService {
 
     public Page<Employee> getAllEmployees(Pageable pageable) {
         return employeeRepository.findAll(pageable);
+
+    }
+    public List<Employee> searchEmployees(
+            String department,
+            String status,
+            String search) {
+
+        if (department != null && !department.isBlank()) {
+            return employeeRepository.findByDepartmentIgnoreCase(department);
+        }
+
+        if (status != null && !status.isBlank()) {
+            return employeeRepository.findByStatusIgnoreCase(status);
+        }
+
+        if (search != null && !search.isBlank()) {
+            return employeeRepository
+                    .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
+                            search, search);
+        }
+
+        return employeeRepository.findAll();
     }
 
     public Employee getEmployeeById(UUID id) {
