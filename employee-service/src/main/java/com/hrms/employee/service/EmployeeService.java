@@ -4,7 +4,7 @@ import com.hrms.employee.dto.EmployeeRequest;
 import com.hrms.employee.entity.Employee;
 import com.hrms.employee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
-
+import com.hrms.employee.exception.DuplicateEmployeeException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +22,13 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(EmployeeRequest request) {
+
+        if (employeeRepository.existsByEmployeeCode(request.getEmployeeCode())) {
+            throw new DuplicateEmployeeException("Employee code already exists");
+        }
+
+        if (employeeRepository.existsByEmail(request.getEmail())) {
+            throw new DuplicateEmployeeException("Email already exists");        }
 
         Employee employee = new Employee();
 
