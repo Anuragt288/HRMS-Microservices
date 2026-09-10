@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import com.hrms.employee.dto.ApiResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class EmployeeController {
 
     // Create employee
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(
+    public ResponseEntity<ApiResponse<Employee>> createEmployee(
             @Valid @RequestBody EmployeeRequest employeeRequest) {
 
         Employee createdEmployee =
@@ -37,67 +38,105 @@ public class EmployeeController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(createdEmployee);
+                .body(
+                        new ApiResponse<>(
+                                HttpStatus.CREATED.value(),
+                                "Employee created successfully",
+                                createdEmployee
+                        )
+                );
     }
 
     // Get all employees
     @GetMapping
-    public ResponseEntity<Page<Employee>> getAllEmployees(
+    public ResponseEntity<ApiResponse<Page<Employee>>> getAllEmployees(
             @PageableDefault(size = 10, sort = "firstName")
             Pageable pageable) {
 
+        Page<Employee> employees =
+                employeeService.getAllEmployees(pageable);
+
         return ResponseEntity.ok(
-                employeeService.getAllEmployees(pageable)
+                new ApiResponse<>(
+                        HttpStatus.OK.value(),
+                        "Employees retrieved successfully",
+                        employees
+                )
         );
     }
     @GetMapping("/search")
-    public ResponseEntity<Page<Employee>> searchEmployees(
+    public ResponseEntity<ApiResponse<Page<Employee>>> searchEmployees(
             @RequestParam(required = false) String department,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String search,
             @PageableDefault(size = 10, sort = "firstName")
             Pageable pageable) {
 
-        return ResponseEntity.ok(
+        Page<Employee> employees =
                 employeeService.searchEmployees(
                         department,
                         status,
                         search,
                         pageable
+                );
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        HttpStatus.OK.value(),
+                        "Employees retrieved successfully",
+                        employees
                 )
         );
     }
 
     // Get employee by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(
+    public ResponseEntity<ApiResponse<Employee>> getEmployeeById(
             @PathVariable UUID id) {
 
+        Employee employee =
+                employeeService.getEmployeeById(id);
+
         return ResponseEntity.ok(
-                employeeService.getEmployeeById(id)
+                new ApiResponse<>(
+                        HttpStatus.OK.value(),
+                        "Employee retrieved successfully",
+                        employee
+                )
         );
     }
 
     // Update employee
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(
+    public ResponseEntity<ApiResponse<Employee>> updateEmployee(
             @PathVariable UUID id,
             @Valid @RequestBody EmployeeRequest employeeRequest) {
 
+        Employee updatedEmployee =
+                employeeService.updateEmployee(id, employeeRequest);
+
         return ResponseEntity.ok(
-                employeeService.updateEmployee(id, employeeRequest)
+                new ApiResponse<>(
+                        HttpStatus.OK.value(),
+                        "Employee updated successfully",
+                        updatedEmployee
+                )
         );
     }
 
     // Delete employee
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEmployee(
+    public ResponseEntity<ApiResponse<String>> deleteEmployee(
             @PathVariable UUID id) {
 
         employeeService.deleteEmployee(id);
 
         return ResponseEntity.ok(
-                "Employee deleted successfully"
+                new ApiResponse<>(
+                        HttpStatus.OK.value(),
+                        "Employee deleted successfully",
+                        null
+                )
         );
     }
 }
