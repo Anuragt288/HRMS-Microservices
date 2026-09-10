@@ -51,13 +51,20 @@ public class EmployeeController {
         );
     }
     @GetMapping("/search")
-    public ResponseEntity<List<Employee>> searchEmployees(
+    public ResponseEntity<Page<Employee>> searchEmployees(
             @RequestParam(required = false) String department,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) String search) {
+            @RequestParam(required = false) String search,
+            @PageableDefault(size = 10, sort = "firstName")
+            Pageable pageable) {
 
         return ResponseEntity.ok(
-                employeeService.searchEmployees(department, status, search)
+                employeeService.searchEmployees(
+                        department,
+                        status,
+                        search,
+                        pageable
+                )
         );
     }
 

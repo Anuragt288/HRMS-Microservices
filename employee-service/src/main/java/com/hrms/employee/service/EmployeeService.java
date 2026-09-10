@@ -5,6 +5,7 @@ import com.hrms.employee.entity.Employee;
 import com.hrms.employee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -41,26 +42,53 @@ public class EmployeeService {
         return employeeRepository.findAll(pageable);
 
     }
-    public List<Employee> searchEmployees(
+    public Page<Employee> searchEmployees(
             String department,
             String status,
-            String search) {
+            String search,
+            Pageable pageable) {
+
+        Specification<Employee> specification = Specification.where(null);
 
         if (department != null && !department.isBlank()) {
-            return employeeRepository.findByDepartmentIgnoreCase(department);
+            specification = specification.and(
+                    (root, query, criteriaBuilder) ->
+                            criteriaBuilder.equal(
+                                    criteriaBuilder.lower(root.get("department")),
+                                    department.toLowerCase()
+                            )
+            );
         }
 
         if (status != null && !status.isBlank()) {
-            return employeeRepository.findByStatusIgnoreCase(status);
+            specification = specification.and(
+                    (root, query, criteriaBuilder) ->
+                            criteriaBuilder.equal(
+                                    criteriaBuilder.lower(root.get("status")),
+                                    status.toLowerCase()
+                            )
+            );
         }
 
         if (search != null && !search.isBlank()) {
-            return employeeRepository
-                    .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
-                            search, search);
+            String searchPattern = "%" + search.toLowerCase() + "%";
+
+            specification = specification.and(
+                    (root, query, criteriaBuilder) ->
+                            criteriaBuilder.or(
+                                    criteriaBuilder.like(
+                                            criteriaBuilder.lower(root.get("firstName")),
+                                            searchPattern
+                                    ),
+                                    criteriaBuilder.like(
+                                            criteriaBuilder.lower(root.get("lastName")),
+                                            searchPattern
+                                    )
+                            )
+            );
         }
 
-        return employeeRepository.findAll();
+        return employeeRepository.findAll(specification, pageable);
     }
 
     public Employee getEmployeeById(UUID id) {
