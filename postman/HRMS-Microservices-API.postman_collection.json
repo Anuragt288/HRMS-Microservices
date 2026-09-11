@@ -7,291 +7,455 @@
   },
   "item": [
     {
-      "name": "Login - Admin",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"Admin@123\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"Admin@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://localhost:8080/api/auth/login",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "auth",
-            "login"
-          ]
+        {
+          "name": "Login - Employee",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"employee\",\r\n  \"password\": \"Employee@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"refreshToken\": \"a120f1c1-4843-468c-b6cb-baa5e09411ec\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/refresh",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXBsb3llZSIsInJvbGUiOiJFTVBMT1lFRSIsImlhdCI6MTc4ODkyODAyOCwiZXhwIjoxNzg5MDE0NDI4fQ.oifgAjUOKc-ahKMf4tGnuA05cSEOcBF9jNxARFv3r1BnyCk6jY10LJMqphb2SNoTTWBgKnucD4jEVix6FXwMfg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"refreshToken\": \"ef8c1efc-d36d-46db-a33c-b601722a624e\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/logout",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Get All Employees",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "",
-              "type": "string"
+      "name": "Employee",
+      "item": [
+        {
+          "name": "Get All Employees",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4ODkyNzU1OCwiZXhwIjoxNzg5MDEzOTU4fQ.XqO0tLIaxj9jCh-0La12_OmKbnvlKze8hAeYH5ozti3jFkbXV9NDKiTMbQonNue5QtKugChbJJOefwrctAJOaw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/employees",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees"
+              ]
             }
-          ]
+          },
+          "response": []
         },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/api/employees",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "employees"
-          ]
+        {
+          "name": "Get Employee By ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4ODkyODgxMCwiZXhwIjoxNzg5MDE1MjEwfQ.QH1xXueXvj1DnJhYizzvSmrLoguj3pJVSCqQbyort2yP5PCG7dygKSwSCRchN6hI2g0Tj6HVX-hFUc6hJImJnw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/employees/3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees",
+                "3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Employee - Admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4ODkzMTQ5NywiZXhwIjoxNzg5MDE3ODk3fQ.wLqm0bvBX6q4IWemO6ChSCWqDo3ea-X5hm6W_p_-vv6yPkeGaADvbeZ0Buvbkz7ZMOLObgdgdcePOJ99J7scVw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"employeeCode\": \"EMP004\",\r\n  \"firstName\": \"Amit\",\r\n  \"lastName\": \"Patil\",\r\n  \"email\": \"amit.patil4@hrms.com\",\r\n  \"phone\": \"9876543210\",\r\n  \"department\": \"IT\",\r\n  \"designation\": \"Software Engineer\",\r\n  \"joiningDate\": \"2026-09-09\",\r\n  \"status\": \"ACTIVE\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/employees",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Employee - Admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXBsb3llZSIsInJvbGUiOiJFTVBMT1lFRSIsImlhdCI6MTc4ODkyOTAzOSwiZXhwIjoxNzg5MDE1NDM5fQ.8wJtMUGpDze_uTDgwS0ln0-PbiHIq36x62ZozAgt0LMXZLkGzNKxd7EY40Jz8MBL0Cq8Os0vi3ygO-nq5yQvlw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"employeeCode\": \"EMP003\",\r\n  \"firstName\": \"Amit\",\r\n  \"lastName\": \"Patil\",\r\n  \"email\": \"amit.patil@hrms.com\",\r\n  \"phone\": \"9876543211\",\r\n  \"department\": \"Engineering\",\r\n  \"designation\": \"Senior Software Engineer\",\r\n  \"joiningDate\": \"2026-09-09\",\r\n  \"status\": \"ACTIVE\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/employees/3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees",
+                "3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Employee - Admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4ODkyODgxMCwiZXhwIjoxNzg5MDE1MjEwfQ.QH1xXueXvj1DnJhYizzvSmrLoguj3pJVSCqQbyort2yP5PCG7dygKSwSCRchN6hI2g0Tj6HVX-hFUc6hJImJnw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/employees/3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees",
+                "3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Employees",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4OTA5OTA0MSwiZXhwIjoxNzg5MTg1NDQxfQ.2xyInYy9ZGIgl5hNK3DvagQv0Bb_tCBSvzJnFsNH-YZWSNR6isOcMYeO6tr4E2z4H6ymUhh96D-djU7XVJL9CA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/employees/search?department=IT&status=ACTIVE&search=Rahul",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "department",
+                  "value": "IT",
+                  "type": "text"
+                },
+                {
+                  "key": "status",
+                  "value": "ACTIVE",
+                  "type": "text"
+                },
+                {
+                  "key": "search",
+                  "value": "Rahul",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Employees - Pagination",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4OTA5OTA0MSwiZXhwIjoxNzg5MTg1NDQxfQ.2xyInYy9ZGIgl5hNK3DvagQv0Bb_tCBSvzJnFsNH-YZWSNR6isOcMYeO6tr4E2z4H6ymUhh96D-djU7XVJL9CA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/employees?page=0&size=5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "type": "text"
+                },
+                {
+                  "key": "size",
+                  "value": "5",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4OTA5OTA0MSwiZXhwIjoxNzg5MTg1NDQxfQ.2xyInYy9ZGIgl5hNK3DvagQv0Bb_tCBSvzJnFsNH-YZWSNR6isOcMYeO6tr4E2z4H6ymUhh96D-djU7XVJL9CA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/employees?page=0&size=10&sort=firstName,desc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "type": "text"
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "sort",
+                  "value": "firstName,desc",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
-    },
-    {
-      "name": "Create Employee - Admin",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"employeeCode\": \"EMP003\",\r\n  \"firstName\": \"Amit\",\r\n  \"lastName\": \"Patil\",\r\n  \"email\": \"amit.patil@hrms.com\",\r\n  \"phone\": \"9876543211\",\r\n  \"department\": \"IT\",\r\n  \"designation\": \"Software Engineer\",\r\n  \"joiningDate\": \"2026-09-09\",\r\n  \"status\": \"ACTIVE\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/employees",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "employees"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Login - Employee",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"username\": \"employee\",\r\n  \"password\": \"Employee@123\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/auth/login",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "auth",
-            "login"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Refresh Token",
-      "request": {
-        "method": "GET",
-        "header": []
-      },
-      "response": []
-    },
-    {
-      "name": "Logout",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"refreshToken\": \"ef8c1efc-d36d-46db-a33c-b601722a624e\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/auth/logout",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "auth",
-            "logout"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Get Employee By ID",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/api/employees/3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "employees",
-            "3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Update Employee - Admin",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"employeeCode\": \"EMP003\",\r\n  \"firstName\": \"Amit\",\r\n  \"lastName\": \"Patil\",\r\n  \"email\": \"amit.patil@hrms.com\",\r\n  \"phone\": \"9876543211\",\r\n  \"department\": \"Engineering\",\r\n  \"designation\": \"Senior Software Engineer\",\r\n  \"joiningDate\": \"2026-09-09\",\r\n  \"status\": \"ACTIVE\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/employees/3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "employees",
-            "3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Delete Employee - Admin",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "DELETE",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/api/employees/3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "employees",
-            "3a80b9ac-fbb4-41ab-bb3f-3ab4ef05a275"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Delete Employee - Employee",
-      "request": {
-        "method": "GET",
-        "header": []
-      },
-      "response": []
+      ]
     }
   ]
 }
