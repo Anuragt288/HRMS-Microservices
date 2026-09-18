@@ -1,6 +1,7 @@
 package com.hrms.employee.controller;
 
 import com.hrms.employee.dto.EmployeeRequest;
+import com.hrms.employee.dto.EmployeeResponse;
 import com.hrms.employee.entity.Employee;
 import com.hrms.employee.service.EmployeeService;
 
@@ -30,11 +31,14 @@ public class EmployeeController {
 
     // Create employee
     @PostMapping
-    public ResponseEntity<ApiResponse<Employee>> createEmployee(
+    public ResponseEntity<ApiResponse<EmployeeResponse>> createEmployee(
             @Valid @RequestBody EmployeeRequest employeeRequest) {
 
         Employee createdEmployee =
                 employeeService.createEmployee(employeeRequest);
+
+        EmployeeResponse employeeResponse =
+                employeeService.mapToResponse(createdEmployee);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -42,18 +46,18 @@ public class EmployeeController {
                         new ApiResponse<>(
                                 HttpStatus.CREATED.value(),
                                 "Employee created successfully",
-                                createdEmployee
+                                employeeResponse
                         )
                 );
     }
 
     // Get all employees
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<Employee>>> getAllEmployees(
+    public ResponseEntity<ApiResponse<Page<EmployeeResponse>>> getAllEmployees(
             @PageableDefault(size = 10, sort = "firstName")
             Pageable pageable) {
 
-        Page<Employee> employees =
+        Page<EmployeeResponse> employees =
                 employeeService.getAllEmployees(pageable);
 
         return ResponseEntity.ok(
@@ -65,14 +69,14 @@ public class EmployeeController {
         );
     }
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<Employee>>> searchEmployees(
+    public ResponseEntity<ApiResponse<Page<EmployeeResponse>>> searchEmployees(
             @RequestParam(required = false) String department,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String search,
             @PageableDefault(size = 10, sort = "firstName")
             Pageable pageable) {
 
-        Page<Employee> employees =
+        Page<EmployeeResponse> employees =
                 employeeService.searchEmployees(
                         department,
                         status,
@@ -91,17 +95,20 @@ public class EmployeeController {
 
     // Get employee by ID
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Employee>> getEmployeeById(
+    public ResponseEntity<ApiResponse<EmployeeResponse>> getEmployeeById(
             @PathVariable UUID id) {
 
         Employee employee =
                 employeeService.getEmployeeById(id);
 
+        EmployeeResponse employeeResponse =
+                employeeService.mapToResponse(employee);
+
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         HttpStatus.OK.value(),
                         "Employee retrieved successfully",
-                        employee
+                        employeeResponse
                 )
         );
     }

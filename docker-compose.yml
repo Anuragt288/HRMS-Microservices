@@ -1,4 +1,5 @@
 services:
+
   mysql:
     image: mysql:8.0
     container_name: hrms-mysql-compose
@@ -16,12 +17,14 @@ services:
       timeout: 5s
       retries: 10
 
+
   service-registry:
     build: ./service-registry
     container_name: hrms-service-registry-compose
     restart: unless-stopped
     ports:
       - "8762:8761"
+
 
   auth-service:
     build: ./auth-service/auth-service
@@ -33,6 +36,7 @@ services:
       - mysql
       - service-registry
 
+
   employee-service:
     build: ./employee-service
     container_name: hrms-employee-service-compose
@@ -42,6 +46,24 @@ services:
     depends_on:
       - mysql
       - service-registry
+
+
+  department-service:
+    build: ./department-service
+    container_name: hrms-department-service-compose
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hrms_department_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+      JWT_SECRET: hrms-project-secret-key-which-should-be-at-least-32-characters-long
+    depends_on:
+      - mysql
+      - service-registry
+
 
   gateway-service:
     build: ./gateway-service
@@ -53,6 +75,8 @@ services:
       - service-registry
       - auth-service
       - employee-service
+      - department-service
+
 
 volumes:
   hrms_mysql_data:

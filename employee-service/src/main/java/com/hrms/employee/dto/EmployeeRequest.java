@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class EmployeeRequest {
 
@@ -29,6 +30,8 @@ public class EmployeeRequest {
     private String phone;
 
     private String department;
+
+    private UUID departmentId;
 
     private String designation;
 
@@ -86,6 +89,14 @@ public class EmployeeRequest {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public UUID getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(UUID departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getDesignation() {

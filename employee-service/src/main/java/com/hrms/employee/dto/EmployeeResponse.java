@@ -1,68 +1,37 @@
-package com.hrms.employee.entity;
-
-import jakarta.persistence.*;
+package com.hrms.employee.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "employees")
-public class Employee {
+public class EmployeeResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @Column(nullable = false, unique = true)
     private String employeeCode;
-
-    @Column(nullable = false)
     private String firstName;
-
-    @Column(nullable = false)
     private String lastName;
-
-    @Column(nullable = false, unique = true)
     private String email;
-
     private String phone;
 
-    private String department;
-
-    @Column
     private UUID departmentId;
+    private String departmentName;
 
+    private String department;
     private String designation;
-
     private LocalDate joiningDate;
-
     private String status;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-    public Employee() {
-    }
-
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-
-        if (status == null) {
-            status = "ACTIVE";
-        }
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public EmployeeResponse() {
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getEmployeeCode() {
@@ -105,18 +74,6 @@ public class Employee {
         this.phone = phone;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public UUID getDepartmentId() {
         return departmentId;
     }
@@ -125,12 +82,20 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getDesignation() {
@@ -161,7 +126,15 @@ public class Employee {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

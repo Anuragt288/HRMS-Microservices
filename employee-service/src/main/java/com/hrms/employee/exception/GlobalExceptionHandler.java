@@ -49,6 +49,21 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
+    @ExceptionHandler(DepartmentNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleDepartmentNotFoundException(
+            DepartmentNotFoundException exception) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("message", exception.getMessage());
+        response.put("data", null);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntimeException(
             RuntimeException exception) {
