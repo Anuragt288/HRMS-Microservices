@@ -64,6 +64,22 @@ services:
       - mysql
       - service-registry
 
+  attendance-service:
+    build: ./attendance-service
+    container_name: hrms-attendance-service-compose
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hrms_attendance_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+      JWT_SECRET: hrms-project-secret-key-which-should-be-at-least-32-characters-long
+    depends_on:
+      - mysql
+      - service-registry
+      - employee-service
 
   gateway-service:
     build: ./gateway-service
@@ -76,7 +92,7 @@ services:
       - auth-service
       - employee-service
       - department-service
-
+      - attendance-service
 
 volumes:
   hrms_mysql_data:
